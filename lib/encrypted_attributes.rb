@@ -162,19 +162,17 @@ module EncryptedAttributes
         # Only encrypt values that actually have content and have not already
         # been encrypted
         unless value.blank? || value.encrypted?
-          callback("before_encrypt_#{attr_name}")
+          run_callbacks("encrypt_#{attr_name}") do
+            # Create the cipher configured for this attribute
+            cipher = create_cipher(cipher_class, options, value)
+            
+            # Encrypt the value
+            value = cipher.encrypt(value)
+            value.cipher = cipher
           
-          # Create the cipher configured for this attribute
-          cipher = create_cipher(cipher_class, options, value)
-          
-          # Encrypt the value
-          value = cipher.encrypt(value)
-          value.cipher = cipher
-          
-          # Update the value based on the target attribute
-          send("#{to_attr_name}=", value)
-          
-          callback("after_encrypt_#{attr_name}")
+            # Update the value based on the target attribute
+            send("#{to_attr_name}=", value)
+          end
         end
       end
       
