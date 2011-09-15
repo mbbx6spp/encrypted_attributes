@@ -162,7 +162,7 @@ module EncryptedAttributes
         # Only encrypt values that actually have content and have not already
         # been encrypted
         unless value.blank? || value.encrypted?
-          run_callbacks("encrypt_#{attr_name}") do
+          run_callbacks(:validate) do
             # Create the cipher configured for this attribute
             cipher = create_cipher(cipher_class, options, value)
             
