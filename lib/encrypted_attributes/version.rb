@@ -1,3 +1,3 @@
 module EncryptedAttributes
-  VERSION = '0.4.1spp'
+  VERSION = '0.4.1p1'
 end
